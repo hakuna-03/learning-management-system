@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: Learning management systemtesryh
+  description: |
+    This is API documentation for Learning management system
+
+    Some useful links:
+    - [Learning Management System repository](https://github.com/hakuna-03/learning-management-system)
+    - [The source API definition for the LMS](https://github.com/hakuna-03/learning-management-system/tree/main/src/utils)
+  contact:
+    email: hakuna.soft.matata@gmail.com
+  version: 3.0.0
+
+servers:
+  - url: https://production-server/api/v1
+  - url: http://localhost:4000/
+
+tags:
+  - name: login
+    description: Operations about user
+
+  - name: user
+    description: Operations about user
+  - name: course
+    description: Access to Petstore course
+  - name: class
+    description: Operations about user
+  - name: pre-requisite
+    description: Access to Petstore course
+  - name: user
+    description: Operations about user
+  - name: course
+    description: Access to Petstore course
+
+paths:
+  /login:
+    get:
+      tags:
+        - login
+      summary: login to the system
+      description: this is a post request to login in to the system
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: text/html
+    post:
+      tags:
+        - login
+      description: This endpoint logs in a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: email
+                password:
+                  type: string
+      responses:
+        200:
+          description: The user has been logged in successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The user's access token.
+                  name:
+                    type: string
+                    description: The user's name
+        401:
+          description: user's email or password is incorrect.
