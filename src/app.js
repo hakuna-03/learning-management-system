@@ -1,24 +1,22 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
+const { allRequires } = require("./utils/index");
 const { swaggerFile } = require("./utils/swagger");
+const { globalError } = require("./middlewares/error-middleware");
 
 const app = express();
 dotenv.config({ path: `${__dirname}/../.env` });
 
-console.log(swaggerFile);
-
-app.use(express.json());
-
 // Serve the Swagger UI.
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+allRequires(app);
+
 app.get("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
-const { globalError } = require("./middlewares/error-middleware");
-
-
-app.get("/login", (req, res) => {
-  res.send("<h1>Hakuna Matata!</h1>");
-});
 
 const server = app.listen(process.env.PORT, () => {
   console.log("server is running");
