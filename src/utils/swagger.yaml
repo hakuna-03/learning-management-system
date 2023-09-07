@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Learning management systemtesryh
+  title: Learning management system
   description: |
     This is API documentation for Learning management system
 
@@ -34,18 +34,6 @@ tags:
 
 paths:
   /login:
-    get:
-      tags:
-        - login
-      summary: login to the system
-      description: this is a post request to login in to the system
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: text/html
     post:
       tags:
         - login
@@ -75,5 +63,8 @@ paths:
                   name:
                     type: string
                     description: The user's name
+                  role:
+                    type: string
+                    description: The user's role
         401:
           description: user's email or password is incorrect.
