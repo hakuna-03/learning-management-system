@@ -12,7 +12,7 @@ db.connect((err) => {
   if (err) {
     console.log("Couldn't Connect to db");
   } else {
-    console.log("Connected to db successfolly");
+    console.log("Connected to db successfully");
   }
 });
 
