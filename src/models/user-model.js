@@ -8,7 +8,7 @@ const User = function (user) {
   this.collageId = user.collageId;
   this.gpa = user.gpa;
   this.role = user.role;
-  this.inrollemntDate = user.inrollemntDate;
+  this.enrollmentDate = user.enrollmentDate;
   this.natId = user.natId;
 };
 
