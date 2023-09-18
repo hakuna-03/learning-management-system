@@ -31,7 +31,6 @@ describe("login", () => {
   it("should return a 401 error if the email or password is invalid",async ()=>{
     
     const response = await request(app).post('/login').send({email:"Invalid_email",password:"password"})
-    console.log(response.body);
     expect(response.status).toBe(400);
 
   })
