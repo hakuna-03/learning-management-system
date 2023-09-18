@@ -1,12 +1,40 @@
-/*global describe,it,expect,jest*/
-jest.mock("bcrypt");
+/* eslint-disable import/newline-after-import */
+/*global beforeAll,describe,it,expect,jest*/
+const request = require('supertest');
 const bcrypt = require("bcrypt");
+const app = require('../app');
 
-const { login } = require("../services/auth-service");
+jest.mock("bcrypt");
+const db = require("../services/auth-service");
+jest.mock = require("../config/db")
+const userServices = require("../services/auth-service");
+// jest.mock("../services/auth-service");
 
-jest.mock("../models/user-model");
 const User = require("../models/user-model");
+jest.mock("../models/user-model");
 const ApiError = require("../utils/api-error");
+
+
+function delay() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 3000);
+  });
+}
+
+beforeAll(async () => {
+  await delay();
+});
+
+describe("login", () => {
+  it("should return a 401 error if the email or password is invalid",async ()=>{
+    
+    const response = await request(app).post('/login').send({email:"Invalid_email",password:"password"})
+    expect(response.status).toBe(400);
+
+  })
+})
 
 /*
 

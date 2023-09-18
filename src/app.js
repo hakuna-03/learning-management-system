@@ -1,10 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const swaggerUi = require("swagger-ui-express");
 const { allRequires } = require("./utils/index");
-const { swaggerFile } = require("./utils/swagger");
 const { globalError } = require("./middlewares/error-middleware");
+const ApiError = require("./utils/api-error");
 
 const app = express();
 dotenv.config({ path: `${__dirname}/../.env` });
@@ -15,20 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 allRequires(app);
 
-// Serve the Swagger UI.
-app.get("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
-const server = app.listen(process.env.PORT, () => {
-  console.log("server is running");
+app.all("/*", (req, res, next) => {
+  next(
+    new ApiError(`can't find this route: ${req.originalUrl} on server`, 404)
+  );
 });
 
-//global error handling middleware
 app.use(globalError);
 
-// handle errors out of Express
-process.on("unhandledRejection", (err) => {
-  server.close(() => {
-    console.log(`UnhandleRejection Errors: ${err}, Shutting down....`);
-    process.exit(1);
-  });
-});
+module.exports = app;

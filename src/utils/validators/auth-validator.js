@@ -13,5 +13,5 @@ exports.loginValidator = [
     .isLength({ min: 4 })
     .withMessage("Too short password must be at least 4 characters"),
 
-  validatorMiddleware
+  validatorMiddleware,
 ];

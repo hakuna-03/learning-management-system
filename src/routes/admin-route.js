@@ -1,7 +1,7 @@
-const { addProfessor } = require("../services/admin-service.js");
-const { addProfessorValidator } = require("../utils/validators/admin-validator.js");
-
 const router = require("express").Router();
+const { addProfessor } = require("../services/admin-service");
+const { addProfessorValidator } = require("../utils/validators/admin-validator");
+
 
 router.post("/professor",addProfessorValidator,addProfessor);
 

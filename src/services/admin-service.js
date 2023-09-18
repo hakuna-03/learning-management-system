@@ -1,7 +1,8 @@
-const db = require("../config/db.js")
-const User = require("../models/user-model.js");
-const { catchAsyncError } = require("../utils/catch-async-error.js");
+/* eslint-disable no-lonely-if */
 const bcrypt = require('bcrypt');
+const db = require("../config/db");
+const User = require("../models/user-model");
+const { catchAsyncError } = require("../utils/catch-async-error");
 
 exports.addProfessor = catchAsyncError(async (req, res) => {
     const prof = req.body;
@@ -19,7 +20,7 @@ exports.addProfessor = catchAsyncError(async (req, res) => {
             }
             else {
                 // Hash the password before storing it
-                const hashedPassword = await bcrypt.hash(prof.password, parseInt(process.env.SLAT_ROUND))
+                const hashedPassword = await bcrypt.hash(prof.password, Number(process.env.SLAT_ROUND))
                 // Create a new User object with professor data
                 const newProfessor = new User({
                     name: prof.name,
@@ -50,7 +51,8 @@ exports.addProfessor = catchAsyncError(async (req, res) => {
                     newProfessor.natId,
                 ];
                 // query the query
-                const result = db.query(sql, values);
+                // eslint-disable-next-line no-unused-vars
+                const queryResult = db.query(sql, values);
                 // Send a success response
                 res.status(201).json({
                     status: "success",
