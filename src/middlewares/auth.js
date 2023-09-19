@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/api-error");
-const { findByEmail } = require("../models/user-model");
 
 exports.verifyToken = asyncHandler(async (req, res, next) => {
   // 1) check if token exist
@@ -16,14 +15,13 @@ exports.verifyToken = asyncHandler(async (req, res, next) => {
   // 2) then verify token (expired or change)
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   // 3) check if the user exists
-  
-  const currentUser = await findByEmail(decoded.email);
-  if (!currentUser) {
+  const {role} = decoded;
+  if (role !== "admin") {
     return next(
-      new ApiError("The user that belong to this token doesn't exist", 401)
+      new ApiError("This is not authrized user", 401)
     );
   }
 
-  req.user = currentUser;
+  req.user = decoded;
   next();
 });

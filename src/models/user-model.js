@@ -16,7 +16,7 @@ const User = function (user) {
 User.login = async (user, next) =>
   new Promise((resolve) => {
     db.query(
-      "SELECT name,email,password,role FROM users WHERE email=?",
+      "SELECT user_id, name, email, password,role FROM users WHERE email=?",
       [user.email],
       (err, res) => {
         if (err) {
@@ -27,16 +27,18 @@ User.login = async (user, next) =>
     );
   });
 
-User.findByEmail = (email) => {
-  const sql = `select email from users where email= ?`;
-  const value = [email];
-  db.query(sql, value, (err, data) => {
-    if (err) return new ApiError(err.message, 500);
-    if (data.length) {
-      return true;
-    }
+User.findOne = async (user, next) =>
+  new Promise((resolve) => {
+    db.query(
+      "SELECT user_id, email,role FROM users WHERE email=?",
+      [user.email],
+      (err, res) => {
+        if (err) {
+          return next(new ApiError(err.message, 500));
+        }
+        resolve(...res);
+      }
+    );
   });
-  return false;
-};
 
 module.exports = User;

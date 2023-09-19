@@ -20,7 +20,7 @@ exports.login = catchAsyncError(async (req, res, next) => {
     return next(new ApiError("Incorrect email or password", 401));
   }
 
-  const token = createToken({email:user.email});
+  const token = createToken({id:data.user_id,role: data.role});
 
   res.status(200).json({ token, name: data.name, role: data.role });
 });
