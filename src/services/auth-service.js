@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const asyncHandler = require("express-async-handler");
 const { catchAsyncError } = require("../utils/catch-async-error");
 const User = require("../models/user-model");
 const ApiError = require("../utils/api-error");
@@ -19,6 +20,9 @@ exports.login = catchAsyncError(async (req, res, next) => {
     return next(new ApiError("Incorrect email or password", 401));
   }
 
-  const token = createToken({ id: user.id });
+  const token = createToken({email:user.email});
+
   res.status(200).json({ token, name: data.name, role: data.role });
 });
+
+

@@ -1,8 +1,8 @@
-const { addProfessor } = require("../services/admin-service.js");
-const { addProfessorValidator } = require("../utils/validators/admin-validator.js");
-
 const router = require("express").Router();
+const { studentValidator } = require("../utils/validators/student-validator");
+const { createStudent } = require("../services/user-service");
+const { verifyToken } = require("../middlewares/auth");
 
-router.post("/professor",addProfessorValidator,addProfessor);
+router.post("/student", verifyToken, studentValidator, createStudent);
 
 module.exports = router;

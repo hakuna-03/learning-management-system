@@ -1,10 +1,11 @@
 const { check } = require("express-validator");
-const validatorMiddleware = require("../../middlewares/validator-middleware");
+const {validatorMiddleware} = require("../../middlewares/validator-middleware");
+
 
 exports.loginValidator = [
   check("email")
     .notEmpty()
-    .withMessage("email required")
+    .withMessage("Email required")
     .isEmail()
     .withMessage("Invalid email address"),
   check("password")
@@ -13,5 +14,6 @@ exports.loginValidator = [
     .isLength({ min: 4 })
     .withMessage("Too short password must be at least 4 characters"),
 
-  validatorMiddleware
+  validatorMiddleware,
 ];
+

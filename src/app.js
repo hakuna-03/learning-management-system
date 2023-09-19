@@ -9,7 +9,6 @@ const { globalError } = require("./middlewares/error-middleware");
 const app = express();
 dotenv.config({ path: `${__dirname}/../.env` });
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
