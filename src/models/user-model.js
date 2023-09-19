@@ -15,7 +15,7 @@ const User = function (user) {
 User.login = async (user, next) =>
   new Promise((resolve) => {
     db.query(
-      "SELECT name,email,password,role FROM users WHERE email=?",
+      "SELECT user_id, name,email,password,role FROM users WHERE email=?",
       [user.email],
       (err, res) => {
         if (err) {
