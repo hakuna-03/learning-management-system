@@ -1,10 +1,11 @@
 const { check } = require("express-validator");
-const validatorMiddleware = require("../../middlewares/validator-middleware");
+const {validatorMiddleware} = require("../../middlewares/validator-middleware");
+
 
 exports.loginValidator = [
   check("email")
     .notEmpty()
-    .withMessage("email required")
+    .withMessage("Email required")
     .isEmail()
     .withMessage("Invalid email address"),
   check("password")
@@ -15,3 +16,4 @@ exports.loginValidator = [
 
   validatorMiddleware,
 ];
+

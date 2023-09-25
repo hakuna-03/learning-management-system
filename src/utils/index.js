@@ -4,6 +4,6 @@ const docs = require("../docs");
 
 exports.allRequires = (app) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(docs));
-  app.use("/admins", require("../routes/admin-route"));
   app.use("/", require("../routes/auth-route"));
+  app.use("/admin", require("../routes/admin-route"));
 };

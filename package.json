@@ -11,8 +11,6 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "clear_jest": "jest --clearCache",
-    "show_config_jest": "jest --showConfig",
     "start:dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
