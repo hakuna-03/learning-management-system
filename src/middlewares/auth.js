@@ -15,11 +15,9 @@ exports.verifyToken = asyncHandler(async (req, res, next) => {
   // 2) then verify token (expired or change)
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   // 3) check if the user exists
-  const {role} = decoded;
+  const { role } = decoded;
   if (role !== "admin") {
-    return next(
-      new ApiError("This is not authrized user", 401)
-    );
+    return next(new ApiError("This is not authrized user", 401));
   }
 
   req.user = decoded;

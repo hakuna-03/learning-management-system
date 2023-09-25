@@ -27,4 +27,17 @@ User.login = async (user, next) =>
     );
   });
 
+User.findOne = async (user, next) =>
+  new Promise((resolve) => {
+    db.query(
+      "SELECT user_id, email,role FROM users WHERE email=?",
+      [user.email],
+      (err, res) => {
+        if (err) {
+          return next(new ApiError(err.message, 500));
+        }
+        resolve(...res);
+      }
+    );
+  });
 module.exports = User;
