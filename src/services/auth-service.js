@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { catchAsyncError } = require("../utils/catch-async-error");
+const {catchAsyncError} = require("../utils/catch-async-error")
 const User = require("../models/user-model");
 const ApiError = require("../utils/api-error");
 const createToken = require("../utils/create-token");
@@ -15,10 +15,10 @@ exports.login = catchAsyncError(async (req, res, next) => {
     return next(new ApiError("Incorrect email or password", 401));
   }
 
-  if (!(await bcrypt.compare(req.body.password, data.password))) {
+  if (!await bcrypt.compare(req.body.password, data.password)) {
     return next(new ApiError("Incorrect email or password", 401));
   }
 
-  const token = createToken({ id: user.id });
+  const token = createToken({ id: data.user_id, role: data.role });
   res.status(200).json({ token, name: data.name, role: data.role });
 });
