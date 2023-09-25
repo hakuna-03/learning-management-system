@@ -26,7 +26,7 @@ module.exports = {
       },
     },
     responses: {
-      201: {
+      200: {
         description: "The user has been logged in successfully.",
         content: {
           "application/json": {

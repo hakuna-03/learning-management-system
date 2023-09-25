@@ -1,55 +1,60 @@
 /* eslint-disable import/order */
-/* eslint-disable import/no-unresolved */
 /* eslint-disable import/newline-after-import */
-/*global beforeAll,afterAll,describe,it,expect,jest*/
+/*global beforeAll,afterEach,describe,it,expect,jest*/
 
+jest.mock("../../utils/create-token");
+const createToken = require("../../utils/create-token");
+jest.spyOn({ createToken }, "createToken").mockReturnValue("$hashedToken");
 
 jest.mock("bcrypt");
 const bcrypt = require("bcrypt");
 const mockBcrypt = jest.spyOn(bcrypt, "compare");
 
-const services = require("../../services/auth-service");
-console.log(services);
-// const { login } = require("../../services/auth-service");
-
 jest.mock("../../models/user-model");
 const User = require("../../models/user-model");
 const mockLoginDB = jest.spyOn(User, "login");
 
+const services = require("../../services/auth-service");
 const ApiError = require("../../utils/api-error");
 
-function delay() {
+function delay(time) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 3000);
+    }, time);
   });
 }
 
 beforeAll(async () => {
-  await delay();
+  await delay(200);
 });
 
-describe("login", () => {
-  it("should return a 401 error if the email or password is incorrect", async () => {
-    const res = {};
-    const req = {};
-    const next = jest.fn();
+const next = jest.fn();
 
-    req.body = {
-      email: "does_not_exist_email@gmail.com",
-      password: "password",
+describe("login : ", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return a 401 error if the email is incorrect", async () => {
+    const res = {};
+    const req = {
+      body: {
+        email: "does_not_exist_email@gmail.com",
+        password: "password",
+      },
     };
-    const loginMockMethod = jest.fn(async () => null);
-    mockLoginDB.mockImplementation(loginMockMethod);
+
+    mockLoginDB.mockResolvedValue(null);
     await services.login(req, res, next);
-    expect(mockLoginDB).toHaveBeenCalledTimes(1);
+
+    expect(mockLoginDB).toHaveBeenCalled();
     expect(next).toHaveBeenCalledWith(
       new ApiError("Incorrect email or password", 401)
     );
   });
 
-  it("should return a 401 stauts code if the password is incorrect", async () => {
+  it("should return a 401 error if the password is incorrect", async () => {
     const res = {};
     const req = {
       body: {
@@ -57,60 +62,45 @@ describe("login", () => {
         password: "invalid_password",
       },
     };
-    const next = jest.fn();
 
-    const loginMockMethod = jest.fn(async () => {
-      const data = {
-        email: "test@gmail.com",
-        password: "password",
-      };
-      return data;
+    mockLoginDB.mockResolvedValue({
+      email: "test@gmail.com",
+      password: "password",
     });
-    mockLoginDB.mockImplementation(loginMockMethod);
-
-    const bcryptMockMethod = jest.fn(async () => false);
-    mockBcrypt.mockImplementation(bcryptMockMethod);
+    mockBcrypt.mockResolvedValue(false);
 
     await services.login(req, res, next);
-    expect(mockLoginDB).toHaveBeenCalledTimes(2);
-    expect(mockBcrypt).toHaveBeenCalledTimes(1);
-    // expect(next).toHaveBeenCalledWith(
-    //   new ApiError("Incorrect email or password", 401)
-    // );
+    expect(mockLoginDB).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(
+      new ApiError("Incorrect email or password", 401)
+    );
   });
-  it("should return a 200 stauts code if  password and email are correct", async () => {
-    const res = { status: jest.fn(), json: jest.fn() };
+
+  it("should return a 200 stauts code, token, role, and name if password and email are correct", async () => {
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     const req = {
       body: {
         email: "test@gmail.com",
         password: "password",
       },
     };
-    const next = jest.fn();
 
-    const loginMockMethod = jest.fn(async () => {
-      const data = {
-        email: "test@gmail.com",
-        password: "password",
-      };
-      return data;
+    mockLoginDB.mockResolvedValue({
+      name: "test",
+      role: "strudent",
+      user_id: 1,
     });
-    mockLoginDB.mockImplementation(loginMockMethod);
 
     const bcryptMockMethod = jest.fn(async () => true);
     mockBcrypt.mockImplementation(bcryptMockMethod);
 
     await services.login(req, res, next);
 
-    // expect(res.status).toHaveBeenCalledWith(200);
-    // expect(res.json).toHaveBeenCalledWith({
-    //   token: expect.any(String),
-    //   name: expect.any(String),
-    //   role: expect.any(String),
-    // });
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      token: expect.any(String),
+      name: expect.any(String),
+      role: expect.any(String),
+    });
   });
-});
-
-afterAll(() => {
-  jest.clearAllMocks();
 });
