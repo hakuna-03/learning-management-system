@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS courses(
 CREATE TABLE IF NOT EXISTS prerequisites(
     course_id               INT NOT NULL ,
     required_course_id      INT NOT NULL ,
+    PRIMARY KEY (course_id,required_course_id),
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     FOREIGN KEY (required_course_id) REFERENCES courses(course_id)
 );
@@ -48,6 +49,7 @@ CREATE TABLE IF NOT EXISTS classes(
 CREATE TABLE IF NOT EXISTS professor_classes(
     professor_id      INT NOT NULL,
     class_id          INT NOT NULL,
+    PRIMARY KEY (professor_id,class_id),
     FOREIGN KEY (professor_id) REFERENCES users(user_id),
     FOREIGN KEY (class_id) REFERENCES classes(class_id)
 );

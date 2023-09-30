@@ -27,6 +27,20 @@ User.login = async (user, next) =>
     );
   });
 
+User.findById = async (id, next) =>
+  new Promise((resolve) => {
+    db.query(
+      "SELECT user_id,role FROM users WHERE user_id=?",
+      [id],
+      (err, res) => {
+        if (err) {
+          return next(new ApiError(err.message, 500));
+        }
+        resolve(...res);
+      }
+    );
+  });
+
 User.findOne = async (user, next) =>
   new Promise((resolve) => {
     db.query(
@@ -40,4 +54,20 @@ User.findOne = async (user, next) =>
       }
     );
   });
+
+//////////////////// PROFESSOR ///////////////////////
+User.getProfessorClasses = async (id, next) =>
+  new Promise((resolve) => {
+    db.query(
+      "SELECT c.class_id, c.name, c.code, c.description,c.semester,c.year FROM classes as c  INNER JOIN professor_classes as pf ON c.class_id = pf.class_id WHERE pf.professor_id=?",
+      [id],
+      (err, res) => {
+        if (err) {
+          return next(new ApiError(err.message, 500));
+        }
+        resolve(res);
+      }
+    );
+  });
+
 module.exports = User;

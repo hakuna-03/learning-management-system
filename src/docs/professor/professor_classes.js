@@ -4,15 +4,14 @@ module.exports = {
     description: "This endpoint get all professor course classes",
     parameters: [
       {
-        name: "id",
-        in: "path",
+        name: "Authorization",
+        in: "header",
         required: true,
-        description: "A single professor id",
-        schema: {
-          $ref: "#/components/schemas/id",
-        },
+        description: "JWT access token",
+        schema:{
+          type: "string",
+        }
       },
-      { $ref: "#/components/schemas/bearerAuth" },
     ],
 
     responses: {
@@ -28,6 +27,10 @@ module.exports = {
                   items: {
                     type: "object",
                     properties: {
+                      class_id: {
+                        type: "integer",
+                        example: 3,
+                      },
                       name: {
                         type: "string",
                         example: "oop",
@@ -40,13 +43,13 @@ module.exports = {
                         type: "string",
                         example: "Object Oriented Programming coure",
                       },
-                      spring: {
+                      semester: {
                         type: "string",
                         example: "fall",
                       },
                       year: {
                         type: "integer",
-                        example: 5,
+                        example: 2021,
                       },
                     },
                   },

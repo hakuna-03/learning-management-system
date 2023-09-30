@@ -7,8 +7,9 @@ const {
 const { studentValidator } = require("../utils/validators/student-validator");
 const { createStudent } = require("../services/user-service");
 const { verifyToken } = require("../middlewares/auth");
+const { allowedTo, auth } = require("../services/auth-service");
 
-router.post("/student", verifyToken, studentValidator, createStudent);
+router.post("/student", auth,allowedTo('admin'), studentValidator, createStudent);
 router.post("/professor",addProfessorValidator, addProfessor);
 
 module.exports = router;

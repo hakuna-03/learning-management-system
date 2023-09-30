@@ -10,8 +10,8 @@ module.exports = {
       bearerAuth: {
         name: "Authorization",
         in: "header",
-        description: "JWT access token",
         required: true,
+        description: "JWT access token",
         type: "string",
       },
 

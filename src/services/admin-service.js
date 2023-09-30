@@ -7,7 +7,6 @@ const { catchAsyncError } = require("../utils/catch-async-error");
 exports.addProfessor = catchAsyncError(async (req, res) => {
   console.log("entered here");
   const prof = req.body;
-  console.log(prof);
   // Check if the email already exists in the database
   db.query(
     `select email from users where email = '${prof.email}'`,
@@ -38,7 +37,6 @@ exports.addProfessor = catchAsyncError(async (req, res) => {
             enrollmentDate: new Date(),
             natId: prof.natId,
           });
-          console.log(newProfessor);
 
           // Build the SQL query manually
           const sql = `
