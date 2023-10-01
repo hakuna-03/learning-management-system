@@ -2,9 +2,9 @@
 /* eslint-disable import/newline-after-import */
 /*global test, beforeAll,expect,jest*/
 const professorServices = require("../../services/professor-service");
-jest.mock("../../models/user-model");
-const User = require("../../models/user-model");
-jest.spyOn(User, "getProfessorClasses").mockResolvedValue([
+jest.mock("../../models/class-model");
+const Class = require("../../models/class-model");
+jest.spyOn(Class, "getProfessorClasses").mockResolvedValue([
   {
     name: "oop",
     code: "OOP301",
