@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const validatorMiddleware = require("../../middlewares/validator-middleware");
+const {validatorMiddleware} = require("../../middlewares/validator-middleware");
 
 exports.addProfessorValidator = [
     check("name")

@@ -1,5 +1,7 @@
-exports.catchAsyncError = (fn) => (req, res, next) => {
-  fn(req, res, next).catch((err) => {
+exports.catchAsyncError = (fn) => async (req, res, next) => {
+  try {
+    await fn(req, res, next);
+  } catch (err) {
     next(err);
-  });
+  }
 };

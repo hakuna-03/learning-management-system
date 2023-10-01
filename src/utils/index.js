@@ -1,5 +1,10 @@
 /*eslint-disable global-require*/
+const swaggerUi = require("swagger-ui-express");
+const docs = require("../docs");
+
 exports.allRequires = (app) => {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(docs));
   app.use("/", require("../routes/auth-route"));
-  app.use("/", require("../routes/admin-route.js"))
+  app.use("/admin", require("../routes/admin-route"));
+  app.use("/professors", require("../routes/professor-route"));
 };
