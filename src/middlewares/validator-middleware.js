@@ -16,7 +16,7 @@ const doesTheUserExist = asyncHandler((req, res, next) => {
   db.query(sql, [email, natId, collageId], (err, data) => {
     if (err) return res.status(500).json(err);
     if (data.length) {
-      return res.status(409).json("This user already exists!");
+      return res.status(409).json({message:"This user already exists!"});
     }
     next();
   });

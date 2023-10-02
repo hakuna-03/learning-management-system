@@ -15,19 +15,20 @@ const sendErrorForProd = (err, res) =>
   });
 
 const handleJWTInvalidSignature = () =>
-  new ApiError("Invalid token please login again..", 401);
+  new ApiError("please login again", 401);
 const handleJWTExpirad = () =>
-  new ApiError("Invalid token, token expired, please login again..", 401);
+  new ApiError("please login again", 401);
 
 exports.globalError = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
-
+    if (err.name === "JsonWebTokenError") err = handleJWTInvalidSignature();
+    if (err.name === "TokenExpiredError") err = handleJWTExpirad();
+    
   if (process.env.NODE_ENV === "development") {
     sendErrorForDev(err, res);
   } else {
-    if (err.name === "JsonWebTokenError") err = handleJWTInvalidSignature();
-    if (err.name === "TokenExpiredError") err = handleJWTExpirad();
+  
     sendErrorForProd(err, res);
   }
 };
