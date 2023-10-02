@@ -1,8 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/api-error");
+const db = require("../config/db");
 
-exports.verifyToken = (roles) => asyncHandler(async (req, res, next) => {
+const verifyToken = (roles) => asyncHandler(async (req, res, next) => {
   let token;
   const { authorization } = req.headers;
   if (authorization && authorization.startsWith(process.env.BEARER_TOKEN)) {
@@ -23,3 +24,22 @@ exports.verifyToken = (roles) => asyncHandler(async (req, res, next) => {
   req.user = decoded;
   next();
 });
+
+const doesTheUserExist = asyncHandler((req, res, next) => {
+  const { email, natId, collageId } = req.body;
+  const sql = `select email,nat_id, collage_id from users where email= ? or nat_id = ? or collage_id = ?`;
+  db.query(sql, [email, natId, collageId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    if (data.length) {
+      return res.status(409).json({ message: "This user already exists!" });
+    }
+    next();
+  });
+});
+
+
+
+module.exports = {
+  doesTheUserExist,
+  verifyToken,
+};

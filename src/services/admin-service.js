@@ -1,11 +1,15 @@
 /* eslint-disable no-lonely-if */
-const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcrypt");
+const { catchAsyncError } = require("../utils/catch-async-error");
+
+const ApiError = require("../utils/api-error");
+
+const hashGenerator = require("../utils/hash-generator");
+
 const db = require("../config/db");
 const User = require("../models/user-model");
-const { catchAsyncError } = require("../utils/catch-async-error");
-const ApiError = require("../utils/api-error");
-const hashGenerator = require("../utils/hash-generator");
+const Course = require("../models/course-model");
 
 
 exports.addProfessor = catchAsyncError(async (req, res) => {
@@ -110,3 +114,27 @@ exports.createStudent = asyncHandler(async (req, res, next) => {
     });
   });
 });
+
+exports.createCourse = asyncHandler(async (req, res, next) => {
+  
+  const course = req.body;
+
+  const sql =
+    "insert into courses(code,name, description) values(?,?,?)";
+  const values = [course.code, course.name, course.description];
+
+  db.query(sql, values, async (error, result) => {
+    if (error) {
+      return next(new ApiError(error.message, 500));
+    }
+    const data = await Course.findCourse(course, next);
+    
+    if (!data) return next(new ApiError("Server error", 500));
+
+    return res.status(200).json({
+      message: "course has been created successfully",
+      data: result,
+    });
+  });
+});
+

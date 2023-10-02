@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const {
   validatorMiddleware,
 } = require("../../middlewares/validator-middleware");
-const { doesTheUserExist } = require("../../middlewares/validator-middleware");
+const { doesTheUserExist } = require("../../middlewares/auth");
 
 exports.studentValidator = [
   check("name").notEmpty().withMessage("Name is required"),
