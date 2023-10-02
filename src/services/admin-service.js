@@ -135,6 +135,7 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
       message: "course has been created successfully",
       data: result,
     });
+    
   });
 });
 
