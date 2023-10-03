@@ -70,3 +70,10 @@ exports.addProfessor = catchAsyncError(async (req, res) => {
     }
   );
 });
+
+
+exports.getUsers = catchAsyncError(async(req,res,next)=>{
+  const {role} = req.query;
+  const users = await User.getUsersByRole(role, next);
+  res.status(200).json({data:users})
+})
