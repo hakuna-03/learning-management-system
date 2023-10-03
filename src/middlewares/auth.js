@@ -14,7 +14,7 @@ const verifyToken = (roles) => asyncHandler(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
+  console.log(decoded.role);
   const { role } = decoded;
     
   if (roles !== role) {
@@ -22,10 +22,12 @@ const verifyToken = (roles) => asyncHandler(async (req, res, next) => {
   }
 
   req.user = decoded;
+  console.log("token  done");
   next();
 });
 
 const doesTheUserExist = asyncHandler((req, res, next) => {
+  console.log("does course function");
   const { email, natId, collageId } = req.body;
   const sql = `select email,nat_id, collage_id from users where email= ? or nat_id = ? or collage_id = ?`;
   db.query(sql, [email, natId, collageId], (err, data) => {
