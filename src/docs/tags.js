@@ -9,6 +9,10 @@ module.exports = {
       description: "Operations about user",
     },
     {
+      name: "admin",
+      description: "Operations about admin",
+    },
+    {
       name: "professor",
       description: "Operations about professor",
     },

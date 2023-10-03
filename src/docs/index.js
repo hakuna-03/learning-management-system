@@ -3,6 +3,7 @@ const servers = require("./servers");
 const components = require("./components")
 const tags = require("./tags");
 const auth = require("./auth");
+const admin = require("./admin");
 const professor = require("./professor");
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
   ...tags,
   paths:{
     ...auth,
+    ...admin,
     ...professor,
   }
 };

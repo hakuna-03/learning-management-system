@@ -55,6 +55,20 @@ User.findOne = async (user, next) =>
     );
   });
 
+User.getUsersByRole = async (role, next) =>
+  new Promise((resolve) => {
+    db.query(
+      "SELECT user_id, name, email, collage_id, enrollment_date FROM users WHERE role=?",
+      [role],
+      (err, res) => {
+        if (err) {
+          return next(new ApiError(err.message, 500));
+        }
+        resolve(res);
+      }
+    );
+  });
+
 
 
 module.exports = User;

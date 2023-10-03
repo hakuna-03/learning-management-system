@@ -1,18 +1,17 @@
 module.exports = {
   components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
     schemas: {
       id: {
         type: "integer",
         description: "An id of a resource",
         example: 5,
-      },
-
-      bearerAuth: {
-        name: "Authorization",
-        in: "header",
-        required: true,
-        description: "JWT access token",
-        type: "string",
       },
 
       Error: {
